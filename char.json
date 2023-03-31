@@ -31,6 +31,7 @@
         "attack1": {
             "name": "Take Post",
             "desc": "Attack, then switch to the center position.",
+            "id": "switchToCenter",
             "cost": {
                 "sour": 1
             },
@@ -53,6 +54,7 @@
         "attack2": {
             "name": "Flood of Juice",
             "desc": "Attack enemies in adjacent positions with half power.",
+            "id": "wide",
             "cost": {
                 "sour": 2
             },
