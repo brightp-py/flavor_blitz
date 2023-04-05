@@ -243,6 +243,8 @@ if __name__ == "__main__":
     while True:
         try:
             singleTurn(user1, player2)
+            if player2.health <= 0 or player1.health <= 0:
+                break
             singleTurn(user2, player1)
             if player2.health <= 0 or player1.health <= 0:
                 break

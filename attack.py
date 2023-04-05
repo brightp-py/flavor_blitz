@@ -109,10 +109,16 @@ def overwhelm(self, a, d, u, o):
         self.basic(a, d, u, o)
         return
 
-    health = d.health
-    dmg = self.basic(a, d, u, o)
+    # health = d.health
+    self.basic(a, d, u, o)
     if d.health <= 0:
-        o.takeDamage(dmg - health)
+        dmg = -d.health * d.dfn // 100
+        o.takeDamage(dmg)
+        # powersave = self.power
+        # self.power = dmg - health
+        # o.takeDamage(dmg - health)
+        # self.basic(a, None, u, o)
+        # self.power = powersave
 
 @identify("recall")
 def recall(self, a, d, u, o):

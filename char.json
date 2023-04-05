@@ -40,8 +40,8 @@
     },
     "lemonturret": {
         "name": "Lemon Turret",
-        "atk": 60,
-        "dfn": 20,
+        "atk": 50,
+        "dfn": 40,
         "health": 60,
         "primary": "sour",
         "attack1": {
@@ -105,6 +105,22 @@
             "power": 30
         }
     },
+    "mushroomgrave": {
+        "name": "Mushroom Grave",
+        "atk": 60,
+        "dfn": 25,
+        "health": 60,
+        "primary": "savory",
+        "attack1": {
+            "name": "Rise from the Dead",
+            "desc": "Return one Savory food card from your discard pile into your hand.",
+            "id": "rescueSavory",
+            "cost": {
+                "savory": 1
+            },
+            "power": 15
+        }
+    },
     "scuffedmushroom": {
         "name": "Scuffed Mushroom",
         "atk": 50,
@@ -160,9 +176,9 @@
     },
     "peachclobbler": {
         "name": "Peach Clobbler",
-        "atk": 70,
+        "atk": 60,
         "dfn": 20,
-        "health": 70,
+        "health": 50,
         "primary": "sweet",
         "attack1": {
             "name": "Clobble",
@@ -204,5 +220,67 @@
     },
     "peachofmelbourne": {
         "name": "Peach of Melbourne"
+    },
+    "peppercourt": {
+        "name": "Pepper Court",
+        "atk": 0,
+        "dfn": 30,
+        "health": 70,
+        "primary": "spicy",
+        "attack1": {
+            "name": "Court Hearing",
+            "desc": "Increase each ally's ATK by 5 for each of their attached foods. Then attack.",
+            "id": "buffAllyAtk",
+            "cost": {
+                "spicy": 1
+            },
+            "power": 20
+        }
+    },
+    "pepperminister": {
+        "name": "Pepper Minister",
+        "atk": 40,
+        "dfn": 5,
+        "health": 50,
+        "primary": "spicy",
+        "attack1": {
+            "name": "Legislate",
+            "cost": {
+                "spicy": 1
+            },
+            "power": 20
+        },
+        "attack2": {
+            "name": "Hire Muscle",
+            "desc": "Switch Pepper Minister's DFN with an ally's (preferring allies to the left).",
+            "id": "tradeDfn",
+            "cost": {
+                "spicy": 1
+            },
+            "power": 10
+        }
+    },
+    "habenhero": {
+        "name": "Haben Hero",
+        "atk": 50,
+        "dfn": 20,
+        "health": 70,
+        "primary": "spicy",
+        "attack1": {
+            "name": "Saber",
+            "cost": {
+                "spicy": 1
+            },
+            "power": 20
+        },
+        "attack2": {
+            "name": "Legacy",
+            "desc": "Increase DFN, ATK, health, and max HP by 5.",
+            "id": "buffSelfAll",
+            "cost": {
+                "spicy": 2
+            },
+            "power": 25
+        }
     }
 }
