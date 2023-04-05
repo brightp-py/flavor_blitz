@@ -1,0 +1,16 @@
+{
+    "Lemonade": {
+        "name": "Lemonade",
+        "first": "sour",
+        "second": "sweet",
+        "trigger": "Combat",
+        "desc": "When this character attacks or is attacked, draw a card."
+    },
+    "OmeletteAndOJ": {
+        "name": "Omelette and OJ",
+        "first": "sour",
+        "second": "savory",
+        "trigger": "AttachFood",
+        "desc": "If this character has no attached foods, heal 10% of their max HP."
+    }
+}

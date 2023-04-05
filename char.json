@@ -1,5 +1,5 @@
 {
-    "000bocchi": {
+    "bocchi": {
         "name": "Bocchi",
         "atk": 25,
         "dfn": 75,
@@ -22,7 +22,7 @@
             "power": 100
         }
     },
-    "001lemonguard": {
+    "lemonguard": {
         "name": "Lemon Guard",
         "atk": 10,
         "dfn": 80,
@@ -38,7 +38,7 @@
             "power": 20
         }
     },
-    "002lemonturret": {
+    "lemonturret": {
         "name": "Lemon Turret",
         "atk": 60,
         "dfn": 20,
@@ -61,7 +61,7 @@
             "power": 30
         }
     },
-    "003lemonbard": {
+    "lemonbard": {
         "name": "Lemon Bard",
         "atk": 35,
         "dfn": 30,
@@ -70,18 +70,19 @@
         "attack1": {
             "name": "Strum",
             "cost": {},
-            "power": 10
+            "power": 5
         },
         "attack2": {
             "name": "Serenade",
             "desc": "If the target position is empty and the opponent can make a legal reposition to fill it, they do so.",
+            "id": "lure",
             "cost": {
                 "sour": 2
             },
             "power": 50
         }
     },
-    "004mushroomnavy": {
+    "mushroomnavy": {
         "name": "Mushroom Navy",
         "atk": 60,
         "dfn": 25,
@@ -97,17 +98,18 @@
         "attack2": {
             "name": "Bombard",
             "desc": "Attack enemies in adjacent positions with half power.",
+            "id": "wide",
             "cost": {
                 "savory": 2
             },
             "power": 30
         }
     },
-    "005scuffedmushroom": {
+    "scuffedmushroom": {
         "name": "Scuffed Mushroom",
         "atk": 50,
         "dfn": 15,
-        "health": 60,
+        "health": 70,
         "primary": "savory",
         "attack1": {
             "name": "Headbutt",
@@ -119,25 +121,88 @@
         "attack2": {
             "name": "Sporous Blast",
             "desc": "The user also attacks itself and heals adjacent allies equal to the damage done.",
+            "id": "sporousBlast",
             "cost": {
                 "savory": 2
             },
             "power": 45
         }
     },
-    "006toughmushroom": {
+    "toughmushroom": {
         "name": "Tough Mushroom",
-        "atk": 40,
-        "dfn": 60,
+        "atk": 20,
+        "dfn": 40,
         "health": 100,
         "primary": "savory",
         "attack1": {
             "name": "Regrow",
-            "desc": "The user heals for 30% of the damage dealt. Excess healing heals the player.",
+            "desc": "The user heals for 50% of the damage dealt. Excess healing heals the player.",
+            "id": "lifeSteal50",
             "cost": {
                 "savory": 2
             },
+            "power": 30
+        }
+    },
+    "peachbabe": {
+        "name": "Peach Babe",
+        "atk": 70,
+        "dfn": 20,
+        "health": 35,
+        "primary": "sweet",
+        "attack1": {
+            "name": "Celebrate",
+            "desc": "Draw a card",
+            "id": "draw",
+            "cost": {},
+            "power": 5
+        }
+    },
+    "peachclobbler": {
+        "name": "Peach Clobbler",
+        "atk": 70,
+        "dfn": 20,
+        "health": 70,
+        "primary": "sweet",
+        "attack1": {
+            "name": "Clobble",
+            "cost": {
+                "sweet": 1
+            },
+            "power": 20
+        },
+        "attack2": {
+            "name": "Demolish",
+            "desc": "If this attack defeats the target, excess damage is dealt to the opponent.",
+            "id": "overwhelm",
+            "cost": {
+                "sweet": 2
+            },
             "power": 50
         }
+    },
+    "peachwisp": {
+        "name": "Peach Wisp",
+        "atk": 50,
+        "dfn": 80,
+        "health": 20,
+        "primary": "sweet",
+        "attack1": {
+            "name": "Spook",
+            "desc": "Refund all food on this user and return this card to your hand.",
+            "id": "recall",
+            "cost": {},
+            "power": 20
+        },
+        "attack2": {
+            "name": "Incinerate",
+            "desc": "Discard all basic sweet cards attached to this card. Attack once for each attached basic sweet card.",
+            "id": "incinerate",
+            "cost": {},
+            "power": 30
+        }
+    },
+    "peachofmelbourne": {
+        "name": "Peach of Melbourne"
     }
 }
