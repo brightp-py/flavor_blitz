@@ -1,5 +1,6 @@
 import json
 import random
+import numpy as np
 
 from attack import ATTACK
 
@@ -11,16 +12,25 @@ with open("food.json", 'r', encoding = 'utf-8') as file:
 
 
 class Player:
+    SCORE_MOD = np.array([
+        1, 2, -1, 1000, 10,
+        25, 10, 10, 50, 2, -1, 2, -1,
+        25, 10, 10, 50, 2, -1, 2, -1,
+        25, 10, 10, 50, 2, -1, 2, -1
+    ])
 
     def __init__(self, deck: list):
         self.deck = deck
         self.hand = []
         self.discard = []
 
+        self.deck_size = len(deck)
         random.shuffle(self.deck)
 
         self.health = 100
         self.dfn = 100
+
+        self.movementCooldown = False
 
         self.char_l = None
         self.char_c = None
@@ -34,6 +44,64 @@ class Player:
         ]
         
         return '\n'.join(lines)
+
+    def copy(self):
+        res = Player(self.deck[:])
+
+        res.deck = self.deck[:]
+        res.hand = self.hand[:]
+        res.discard = self.discard[:]
+
+        res.deck_size = self.deck_size
+
+        res.health = self.health
+        res.dfn = self.health
+
+        res.movementCooldown = self.movementCooldown
+
+        res.char_l = None if self.char_l is None else self.char_l.copy()
+        res.char_c = None if self.char_c is None else self.char_c.copy()
+        res.char_r = None if self.char_r is None else self.char_r.copy()
+
+        return res
+    
+    def asArray(self):
+        res = np.zeros(29)
+
+        res[:5] = np.array([
+            len(self.deck) / self.deck_size,
+            len(self.hand) / self.deck_size,
+            len(self.discard) / self.deck_size,
+            self.health / 100,
+            self.dfn / 100
+        ])
+
+        for char, i in zip((self.char_l, self.char_c, self.char_r),
+                           (5, 13, 21)):
+            if char is not None:
+                # print(char)
+                res[i] = 1
+                res[i+1:i+8] = char.asArray()
+        
+        # res[5] = 0 if self.char_l is None else 1
+        # res[13] = 0 if self.char_c is None else 1
+        # res[21] = 0 if self.char_r is None else 1
+
+        # res[6:13] = self.char_l.data()
+        # res[14:21] = self.char_l.data()
+        # res[22:29] = self.char_l.data()
+
+        return res
+
+    def score(self):
+        return np.sum(self.asArray() * self.SCORE_MOD)
+
+    def charAt(self, pos):
+        if pos == 'l':
+            return self.char_l
+        if pos == 'c':
+            return self.char_c
+        return self.char_r
     
     def rotate(self):
         self.char_l, self.char_c, self.char_r = (
@@ -45,6 +113,7 @@ class Player:
             self.char_l.pos = 'l'
         if self.char_c is not None:
             self.char_c.pos = 'c'
+        self.movementCooldown = True
     
     def switch_l(self):
         self.char_l, self.char_c = self.char_c, self.char_l
@@ -52,6 +121,7 @@ class Player:
             self.char_l.pos = 'l'
         if self.char_c is not None:
             self.char_c.pos = 'c'
+        self.movementCooldown = True
     
     def switch_r(self):
         self.char_r, self.char_c = self.char_c, self.char_r
@@ -59,6 +129,7 @@ class Player:
             self.char_r.pos = 'r'
         if self.char_c is not None:
             self.char_c.pos = 'c'
+        self.movementCooldown = True
     
     # def refund(self, character, cost = None):
         # if cost is None:
@@ -75,6 +146,7 @@ class Player:
         self.hand.extend(food.ident for food in character.food_complex)
         character.food_basic = []
         character.food_complex = []
+        self.movementCooldown = False
     
     def attack(self, attacker, opponent, secondary = False):
         attack_func = attacker.attack1
@@ -91,10 +163,15 @@ class Player:
         attack_func(attacker, defender, self, opponent)
         # self.refund(attacker, attack_func.cost)
         self.hand.extend(attacker.applyAttackCost(secondary))
+        self.movementCooldown = False
     
     def draw(self):
+        if len(self.deck) == 0:
+            self.health = 0
+            return
         self.hand.append(self.deck[0])
         del self.deck[0]
+        self.movementCooldown = False
     
     def attachFood(self, food, character):
         assert food in self.hand
@@ -104,6 +181,7 @@ class Player:
         # if food not in character.food:
         #     character.food[food] = 0
         # character.food[food] += 1
+        self.movementCooldown = False
     
     def playCharacter(self, char_id, position):
         assert position in ('l', 'c', 'r')
@@ -119,6 +197,7 @@ class Player:
             self.char_c = character
         
         self.hand.remove(char_id)
+        self.movementCooldown = False
     
     def discardCharacter(self, char):
         self.discard.append(char.ident)
@@ -129,6 +208,7 @@ class Player:
         elif char.pos == 'c':
             self.char_c = None
         # del char
+        self.movementCooldown = False
     
     def takeDamage(self, damage):
         self.health -= damage
@@ -209,6 +289,7 @@ class Character:
 
     def __init__(self, data: dict, ident: str, position: str):
         self.__dict__ |= data
+        self.data = data
         self.ident = ident
         self.pos = position
 
@@ -243,6 +324,36 @@ class Character:
         if self.locked_food is not None:
             lines[0] += f" | [{self.locked_food.name}]"
         return '\n'.join(lines)
+
+    def copy(self):
+        res = Character(self.data, self.ident, self.pos)
+
+        res.atk = self.atk
+        res.dfn = self.dfn
+        res.base_hp = self.base_hp
+        res.health = self.health
+
+        res.locked_food = self.locked_food
+        res.lock_time = self.lock_time
+        res.food_basic = self.food_basic[:]
+        res.food_complex = self.food_complex[:]
+
+        return res
+    
+    def asArray(self):
+        res = np.array([self.atk, self.dfn, self.health, 0.0, 0.0, 0.0, 0.0])
+        res /= 100.0
+
+        res[4] = sum(self.canAttack(False, True))
+        if res[4] == 0:
+            res[3] = 1
+        
+        if self.attack2 is not None:
+            res[6] = sum(self.canAttack(True, True))
+            if res[6] == 0:
+                res[5] = 1
+        
+        return res
 
     def print(self):
         print(str(self))
@@ -281,7 +392,7 @@ class Character:
         
         return cost
 
-    def canAttack(self, secondary = False):
+    def canAttack(self, secondary = False, returnCost = False):
         if secondary and self.attack2 is None:
             return False
         
@@ -297,6 +408,9 @@ class Character:
             j = Food.FLAV2IND[food.second]
             cost[i] -= 1
             cost[j] -= 1
+        
+        if returnCost:
+            return [(0 if flav < 0 else flav) for flav in cost]
         
         return all(flav <= 0 for flav in cost)
 
@@ -391,48 +505,6 @@ class Attack:
         if damage < 1:
             damage = 1
         defender.takeDamage(damage)
-        print(f"Dealt {str(damage)} damage!")
+        # if not self.quiet_attacks:
+            # print(f"Dealt {str(damage)} damage!")
         return damage
-
-if __name__ == "__main__":
-    sour_base = {
-        "LemonGuard": 2,
-        "LemonTurret": 2,
-        "LemonBard": 2,
-        "sour": 6
-    }
-
-    savory_base = {
-        "MushroomNavy": 2,
-        "ScuffedMushroom": 2,
-        "ToughMushroom": 2,
-        "savory": 6
-    }
-
-    sweet_base = {
-        "PeachBabe": 2,
-        "PeachCobbler": 2,
-        "PeachWisp": 2,
-        "sweet": 6
-    }
-
-    deck1 = []
-    for card, count in (sweet_base | sour_base).items():
-        deck1 += [card] * count
-    
-    deck2 = []
-    for card, count in (sweet_base | savory_base).items():
-        deck2 += [card] * count
-    
-    player1 = Player(deck1)
-    player2 = Player(deck2)
-
-    player1.hand.append("001lemonguard")
-    player1.playCharacter("001lemonguard", 'l')
-    print(str(player1.char_l))
-    player1.hand.append("sour")
-    player1.attachFood("sour", player1.char_l)
-    print(str(player1.char_l))
-    print(player1.char_l.canAttack())
-    player1.attack(player1.char_l, player2)
-    print(player2.health)

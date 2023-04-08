@@ -24,14 +24,14 @@ def wideAttack(self, a, d, u, o):
 
     self.power = self.power / 2
     if a.pos in ('l', 'r') and o.char_c is not None:
-        print('c', o.char_c)
+        # print('c', o.char_c)
         self.basic(a, o.char_c, u, o)
     if a.pos == 'c':
         if o.char_l is not None:
-            print('l', o.char_l)
+            # print('l', o.char_l)
             self.basic(a, o.char_l, u, o)
         if o.char_r is not None:
-            print('r', o.char_r)
+            # print('r', o.char_r)
             self.basic(a, o.char_r, u, o)
     self.power = power_save
 
@@ -153,3 +153,49 @@ def incinerate(self, a, d, u, o):
     # for _ in range(a.food["sweet"]):
     #     self.basic(a, d, u, o)
     #     u.discard.append("sweet")
+
+@identify("rescueSavory")
+def rescueSavory(self, a, d, u, o):
+    self.basic(a, d, u, o)
+    if "savory" in u.discard:
+        u.discard.remove("savory")
+        u.hand.append("savory")
+
+@identify("buffAllyAtk")
+def buffAllyAtk(self, a, d, u, o):
+    for char in (u.char_l, u.char_c, u.char_r):
+        if char is None:
+            continue
+        char.atk += 5 * (len(char.food_basic) + len(char.food_complex))
+        if char.locked_food is not None:
+            char.atk += 5
+    self.basic(a, d, u, o)
+
+@identify("tradeDfn")
+def tradeDfn(self, a, d, u, o):
+
+    if a.pos == 'l':
+        if u.char_c is not None:
+            a.dfn, u.char_c.dfn = u.char_c.dfn, a.dfn
+        elif u.char_r is not None:
+            a.dfn, u.char_r.dfn = u.char_r.dfn, a.dfn
+    elif a.pos == 'c':
+        if u.char_l is not None:
+            a.dfn, u.char_l.dfn = u.char_l.dfn, a.dfn
+        elif u.char_r is not None:
+            a.dfn, u.char_r.dfn = u.char_r.dfn, a.dfn
+    elif a.pos == 'r':
+        if u.char_l is not None:
+            a.dfn, u.char_l.dfn = u.char_l.dfn, a.dfn
+        elif u.char_c is not None:
+            a.dfn, u.char_c.dfn = u.char_c.dfn, a.dfn
+    
+    self.basic(a, d, u, o)
+
+@identify("buffSelfAll")
+def buffSelfAll(self, a, d, u, o):
+    self.basic(a, d, u, o)
+    a.atk += 5
+    a.dfn += 5
+    a.base_hp += 5
+    a.health += 5

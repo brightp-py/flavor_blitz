@@ -146,8 +146,8 @@
     },
     "toughmushroom": {
         "name": "Tough Mushroom",
-        "atk": 20,
-        "dfn": 40,
+        "atk": 25,
+        "dfn": 10,
         "health": 100,
         "primary": "savory",
         "attack1": {
@@ -257,7 +257,7 @@
             "cost": {
                 "spicy": 1
             },
-            "power": 10
+            "power": 15
         }
     },
     "habenhero": {
@@ -275,7 +275,7 @@
         },
         "attack2": {
             "name": "Legacy",
-            "desc": "Increase DFN, ATK, health, and max HP by 5.",
+            "desc": "Attack, then increase DFN, ATK, health, and max HP by 5.",
             "id": "buffSelfAll",
             "cost": {
                 "spicy": 2
