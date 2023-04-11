@@ -282,5 +282,107 @@
             },
             "power": 25
         }
+    },
+    "brusselsprout": {
+        "name": "Brussel Sprout",
+        "atk": 30,
+        "dfn": 60,
+        "health": 30,
+        "primary": "bitter",
+        "attack1": {
+            "name": "Cardio",
+            "desc": "Transform this Brussel Sprout into a Brussel Scout.",
+            "id": "transformBrusselScout",
+            "cost": {
+                "bitter": 1
+            },
+            "power": 20
+        },
+        "attack2": {
+            "name": "Lift Weights",
+            "desc": "Transform this Brussel Sprout into a Muscle Sprout.",
+            "id": "transformMuscleSprout",
+            "cost": {
+                "bitter": 2
+            },
+            "power": 40
+        }
+    },
+    "brusselscout": {
+        "name": "Brussel Scout",
+        "atk": 40,
+        "dfn": 100,
+        "health": 30,
+        "primary": "bitter",
+        "attack1": {
+            "name": "Strike",
+            "cost": {
+                "bitter": 1
+            },
+            "power": 20
+        },
+        "attack2": {
+            "name": "Prepare",
+            "desc": "Increase this attacker's DFN for every food attached to the defender.",
+            "id": "buffAllyByOppFood",
+            "cost": {
+                "bitter": 2
+            },
+            "power": 40
+        }
+    },
+    "musclesprout": {
+        "name": "Muscle Sprout",
+        "atk": 50,
+        "dfn": 100,
+        "health": 50,
+        "primary": "bitter",
+        "attack1": {
+            "name": "Punch",
+            "cost": {
+                "bigger": 1
+            },
+            "power": 25
+        },
+        "attack2": {
+            "name": "Knock Off",
+            "desc": "Discard the oldest food attached to the defender.",
+            "id": "discardOppFood",
+            "cost": {
+                "bitter": 2
+            },
+            "power": 40
+        }
+    },
+    "kaleswitch": {
+        "name": "Kale Switch",
+        "atk": 10,
+        "dfn": 90,
+        "health": 50,
+        "primary": "bitter",
+        "attack1": {
+            "name": "Invert",
+            "desc": "Switch this attacker's ATK and DFN.",
+            "id": "switchAtkDfn",
+            "cost": {
+                "bitter": 1
+            },
+            "power": 20
+        }
+    },
+    "brawlcollie": {
+        "name": "Brawl Collie",
+        "atk": 20,
+        "dfn": 100,
+        "health": 60,
+        "attack1": {
+            "name": "Defend",
+            "desc": "Increase all allies' DFN by a tenth of the attacker's health.",
+            "id": "buffAllyDfnByHealth",
+            "cost": {
+                "bitter": 1
+            },
+            "power": 20
+        }
     }
 }
